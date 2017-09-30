@@ -65,3 +65,27 @@
 ### P.130
 
 > HaskellのPreludeではデータを`表`すほとんどの型が...
+
+# 4章
+## P.136
+
+ソースコードの1行目の `Prelude>` は不必要
+
+## P.142
+ソースコードに `import System.IO` が無いので実行できない
+
+## P.151
+
+> 同じく System.`Directory`モジュールの
+
+## P.153
+
+> System.`Directory`モジュールの
+
+## P.154 Column
+
+＞ `++` が正しい
+
+## P.161
+
+> throwMyException関数が引数の値によって独自の例外を`throwIO`で発生させます。
