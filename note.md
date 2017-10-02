@@ -98,3 +98,31 @@
 ## P.190
 
 > 第二引数で指定した初期値のリストの長さ｀が`配列のサイズよりも
+
+# 6章
+## P.216
+
+`filepaths` ではなく `filePaths`
+
+## P.219
+
+`do` が足りない
+
+```haskell
+  handleMultiFiles filePaths $ \hdl -> do
+    hClose hdl
+```
+
+## P.223
+
+`Ord` クラスの2行目の `::` の前にたぶん空白が1つ必要？(今までのコード例から推測)
+
+## P.224
+言語拡張が必要
+
+```haskell
+{-# LANGUAGE FlexibleInstances    #-}
+
+class Triple a where
+  triple :: a -> a
+```
