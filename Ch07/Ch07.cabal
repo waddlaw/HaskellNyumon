@@ -23,4 +23,17 @@ executable Ch07
       src
   build-depends:
       base >= 4.7 && < 5
+    , array
+    , containers
+    , bytestring
+    , text
+    , vector
+    , attoparsec
+    , split
+    , aeson
+    , time
+    , lens
+    , mtl
+    , operational
+    , pipes
   default-language: Haskell2010
