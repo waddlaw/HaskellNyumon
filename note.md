@@ -126,3 +126,182 @@
 class Triple a where
   triple :: a -> a
 ```
+
+# 7章
+## P.240
+正しくは以下のどちらか。
+
+`import as` の場合。
+
+```bash
+ghci> :set -XOverloadedStrings
+ghci> import Data.Text as T
+ghci> simon = "Many Simons." :: Text
+ghci> :t T.pack
+T.pack :: String -> Text
+ghci> :t T.unpack
+T.unpack :: Text -> String
+```
+
+`import qualified as` の場合。たぶん書籍ではこちらを意図していたと思われる。
+
+- `simon :: Text` の行がいらなくて、次の行で `simon = "Many Simons." :: T.Text` としなければならない。
+
+```bash
+ghci> :set -XOverloadedStrings
+ghci> import qualified Data.Text as T
+ghci> simon = "Many Simons." :: T.Text
+ghci> :t T.pack
+T.pack :: String -> T.Text
+ghci> :t T.unpack
+T.unpack :: T.Text -> String
+```
+
+## P.243
+最初のコード例の先頭に `import qualified Data.Vector as V` が必要。
+
+## P.247
+補足事項。コードを動かすためには以下の行を自分で追記する必要がある。
+
+```haskell
+import Data.List.Split
+
+data HMS = HMS Int Int Int deriving Show
+```
+
+
+## P.250
+補足事項。コードを動かすためには以下の2行を自分で追記する必要がある。
+
+```haskell
+import Control.Applicative
+data Animal = Dog | Pig deriving Show
+```
+
+## P.254
+補足事項。ページ下部のコードを動かすためには `import qualified Data.Text as T` の代わりに `{-# LANGUAGE OverloadedStrings #-}` が必要。
+
+## P.258
+`taro` の定義が重複しているためコンパイルエラーとなるため、コメントアウトする。
+
+```haskell
+-- taro :: Human
+-- taro = Human { name = "Taro" , age = 30 }
+```
+
+## P.259
+補足事項。出力結果は `B.putStrLn $ encode nameList` を整形したもの。
+
+## P.259
+コードが中途半端になっている。
+
+```haskell
+data IntStr = IntData Int | StrData String deriving Show
+
+deriveJSON defaultOptions ''IntStr
+
+main :: IO ()
+main = do
+  B.putStrLn $ encode $ IntData 999
+  B.putStrLn $ encode $ StrData "World!"
+```
+
+## P.260
+
+コードを動かすためには以下の言語拡張と `import` が必要
+
+```haskell
+{-# LANGUAGE OverloadedLists #-}
+{-# LANGUAGE OverloadedStrings #-}
+
+import Data.Aeson
+```
+
+## P.261
+補足事項。完全なコードはこちら。
+
+```haskell
+{-# LANGUAGE TemplateHaskell   #-}
+
+import Data.Aeson
+import Data.Aeson.TH
+import qualified Data.ByteString.Lazy.Char8 as B
+
+data Human = Human
+  { name :: String
+  , age :: Int
+  } deriving Show
+
+deriveJSON defaultOptions ''Human
+
+data Department = Department
+  { departmentName :: String
+  , coworkers :: [Human]
+  } deriving Show
+
+deriveJSON (defaultOptions
+  { fieldLabelModifier = \s -> case s of
+      "departmentName" -> "name"
+      t -> t
+  } ) ''Department
+
+taro :: Human
+taro = Human { name = "Taro" , age = 30 }
+
+saburo :: Human
+saburo = Human { name = "Saburo" , age = 31 }
+
+shiro :: Human
+shiro = Human { name = "Shiro" , age = 31 }
+
+matsuko :: Human
+matsuko = Human { name = "Matsuko" , age = 26}
+
+nameList :: [Department]
+nameList =
+  [ Department
+    { departmentName = "General Affairs"
+    , coworkers =
+      [ taro
+      , matsuko
+      ]
+    }
+  , Department
+    { departmentName = "Development"
+    , coworkers =
+      [ saburo
+      , shiro
+      ]
+    }
+  ]
+
+main :: IO ()
+main = B.putStrLn $ encode nameList
+```
+
+## P.263
+補足事項。完全なコード
+
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+import Data.Aeson
+import Data.Aeson.Types
+
+data Person = Person
+  { name :: String
+  , age :: Int
+  } deriving Show
+
+instance ToJSON Person where
+  toJSON (Person n a) =
+    object ["name" .= n, "age" .= a]
+
+instance FromJSON Person where
+  parseJSON (Object v) = Person
+    <$> v .: "name"
+    <*> v .: "age"
+  parseJSON i = typeMismatch "Person" i
+```
+
+## P.263 Generics の利用のコード
+`import Data.Aeson` が足りないのでコンパイルできない。
