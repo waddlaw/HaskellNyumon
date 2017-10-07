@@ -13,8 +13,69 @@ extra-source-files:
 
 dependencies:
   - base >= 4.7 && < 5
+  - monad-par
+source-dirs: src
 
 executables:
-  Ch08:
-    source-dirs:      src
-    main:             Main.hs
+  single-processor:
+    main: Main.hs
+  multi-processors:
+    main: Main.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+  qsem:
+    main: Qsem.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+  stm:
+    main: Stm.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+  stm2:
+    main: Stm2.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies: stm
+  exception:
+    main: exception.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+  mask:
+    main: mask.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+  exception-stm:
+    main: exception-stm.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies: stm
+  async:
+    main: async.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - bytestring
+      - async
+      - http-conduit
+  withAsync:
+    main: withAsync.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - async
+  withAsync2:
+    main: withAsync2.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - async
+  withAsync3:
+    main: withAsync3.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - async
+  safe-exception:
+    main: safe-exception.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - safe-exceptions
+  strategies:
+    main: strategies.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - parallel
+  monad-par:
+    main: monad-par.hs
+    ghc-options: -threaded "-with-rtsopts=-N"
+    dependencies:
+      - parallel

@@ -17,10 +17,262 @@ cabal-version:  >= 1.10
 extra-source-files:
     README.md
 
-executable Ch08
+executable async
+  main-is: async.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , bytestring
+    , async
+    , http-conduit
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable exception
+  main-is: exception.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable exception-stm
+  main-is: exception-stm.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , stm
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable mask
+  main-is: mask.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable monad-par
+  main-is: monad-par.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , parallel
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable multi-processors
+  main-is: Main.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+  other-modules:
+      Lock
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable qsem
+  main-is: Qsem.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable safe-exception
+  main-is: safe-exception.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , safe-exceptions
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable single-processor
   main-is: Main.hs
   hs-source-dirs:
       src
   build-depends:
       base >= 4.7 && < 5
+    , monad-par
+  other-modules:
+      Lock
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable stm
+  main-is: Stm.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm2
+  default-language: Haskell2010
+
+executable stm2
+  main-is: Stm2.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , stm
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+  default-language: Haskell2010
+
+executable strategies
+  main-is: strategies.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , parallel
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable withAsync
+  main-is: withAsync.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , async
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable withAsync2
+  main-is: withAsync2.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , async
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
+  default-language: Haskell2010
+
+executable withAsync3
+  main-is: withAsync3.hs
+  hs-source-dirs:
+      src
+  ghc-options: -threaded "-with-rtsopts=-N"
+  build-depends:
+      base >= 4.7 && < 5
+    , monad-par
+    , async
+  other-modules:
+      Lock
+      Main
+      Mvar
+      Qsem
+      Stm
+      Stm2
   default-language: Haskell2010
