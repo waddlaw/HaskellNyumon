@@ -305,3 +305,30 @@ instance FromJSON Person where
 
 ## P.263 Generics の利用のコード
 `import Data.Aeson` が足りないのでコンパイルできない。
+
+# 8章
+## P.286
+
+`import Control.Exception` が必要
+
+## P.287
+
+`import Control.Exception` が不要
+
+## P.288
+
+```haskell
+import Control.Concurrent
+import Control.Exception
+```
+
+が必要。
+
+
+## P.289
+
+`import Control.Monad` が必要
+
+## P.301
+
+補足事項: `http-conduit` パッケージが必要
