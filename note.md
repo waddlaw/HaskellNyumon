@@ -332,3 +332,21 @@ import Control.Exception
 ## P.301
 
 補足事項: `http-conduit` パッケージが必要
+
+# 9章
+## P.311
+日本語が意味不明
+
+> Stack による hjq.cabal の初期の設定では、テストは src ディレクトリ `次` のモジュールを読み込むようになっているため、すぐにテストが書ける
+
+## P.313
+たぶんだけど。 `hs-source-dirs` じゃなくて `hjq-test`
+
+## P.318
+実装 (`jqFilterParser`)
+
+## P.318
+文脈からたぶん、`jqFilterParserSpacesTest` も成功するようになりました。が正しい
+
+## P.326
+`stack exec hjq-exe` で実行する
