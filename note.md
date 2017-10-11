@@ -350,3 +350,20 @@ import Control.Exception
 
 ## P.326
 `stack exec hjq-exe` で実行する
+
+# 10章
+## P.340
+`deriving`
+
+## P.341
+`スキーマ名`
+
+## P.349
+`Model.WeightRecord`
+
+## P.359
+続いて data-files `次のファイルに` ?
+というか、この部分全体的に何言ってるのかわかんない。
+
+## P.369
+`src/Web.WeightRecorder.hs`
