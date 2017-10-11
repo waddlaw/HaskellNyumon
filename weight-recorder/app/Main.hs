@@ -1,28 +1,22 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Web.Spock
-import Web.Spock.Config
+import Data.Monoid ((<>))
+import Options.Applicative (Parser, auto, execParser, header, help, helper, info, long, metavar, option, progDesc, short, value)
+import Paths_weight_recorder (getDataDir)
+import System.FilePath ((</>))
+import Web.WeightRecorder (WRConfig(WRConfig), runWeightRecorder)
 
-import Control.Monad.Trans
-import Data.Monoid
-import Data.IORef
-import qualified Data.Text as T
-
-data MySession = EmptySession
-data MyAppState = DummyAppState (IORef Int)
+buildCfgParser :: IO (Parser WRConfig)
+buildCfgParser = do
+  datadir <- getDataDir
+  let db = option auto (long "db" <> short 'd' <> metavar "DB" <> help "SQLite DB" <> value "weight.db")
+      tplroot = option auto (long "tplroot" <> short 't' <> metavar "ROOT" <> help "the root path of template directory" <> value (datadir </> "templates"))
+      port = option auto (long "port" <> short 'p' <> metavar "PORT" <> help "listen PORT" <> value 8080)
+  return $ WRConfig <$> db <*> ((: []) <$> tplroot) <*> port
 
 main :: IO ()
-main =
-    do ref <- newIORef 0
-       spockCfg <- defaultSpockCfg EmptySession PCNoDatabase (DummyAppState ref)
-       runSpock 8080 (spock spockCfg app)
-
-app :: SpockM () MySession MyAppState ()
-app =
-    do get root $
-           text "Hello World!"
-       get ("hello" <//> var) $ \name ->
-           do (DummyAppState ref) <- getState
-              visitorNumber <- liftIO $ atomicModifyIORef' ref $ \i -> (i+1, i+1)
-              text ("Hello " <> name <> ", you are visitor number " <> T.pack (show visitorNumber))
+main = do
+  parser <- buildCfgParser
+  let opts = info (helper <*> parser) (progDesc "Run the Weight Recorder server" <> header "weight-recorder - A web application to record your weights")
+  cfg <- execParser opts
+  runWeightRecorder cfg
