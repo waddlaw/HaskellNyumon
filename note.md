@@ -482,31 +482,90 @@ data Person = ...
 ```
 
 # 8章
-## P.286
+## 8.2.2 MVar の利用 (P.286 コード)
+誤植ではないかもしれない。
 
-`import Control.Exception` が必要
+誤:
+```haskell
+actionIO :: IO a -> IO a
+actionIO action = ...
+```
 
-## P.287
+正:
+```haskell
+import Control.Exception
 
-`import Control.Exception` が不要
+actionIO :: IO a -> IO a
+actionIO action = ...
+```
 
-## P.288
+## 8.2.2 MVar の利用 (P.287 コード)
+誤植ではないかもしれない。
 
+誤:
+```haskell
+module Lock
+( Lock
+, newLock
+, withLock
+) where
+
+import Control.Concurrent
+import Control.Exception
+
+data Lock a = Lock (MVar a)
+```
+
+正:
+```haskell
+module Lock
+( Lock
+, newLock
+, withLock
+) where
+
+import Control.Concurrent
+
+data Lock a = Lock (MVar a)
+```
+
+## 8.2.3 複数スレッドからのアクセス (P.288 下段コード)
+誤植ではないかもしれない。
+
+誤:
+```haskell
+data ShareResource a = ...
+```
+
+正:
 ```haskell
 import Control.Concurrent
 import Control.Exception
+
+data ShareResource a = ...
 ```
 
-が必要。
+## 8.2.3 複数スレッドからのアクセス (P.289 コード)
+誤植ではないかもしれない。
 
+誤:
+```haskell
+main :: IO ()
+main = ...
+```
 
-## P.289
+正:
+```haskell
+import Control.Monad
 
-`import Control.Monad` が必要
+main :: IO ()
+main = ...
+```
 
-## P.301
+## 8.5.1 基本の利用 (P.301 コード)
+誤植ではないかも。
 
-補足事項: `http-conduit` パッケージが必要
+コードをコンパイルするには `http-conduit` パッケージのインストールが別途必要になる。
 
 # 9章
 ## P.311
