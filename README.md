@@ -1,6 +1,7 @@
 # 正誤表
 
 - [サポートページ](http://gihyo.jp/book/2017/978-4-7741-9237-6/support)
+- [サンプルコードリポジトリ](https://github.com/hiratara/Haskell-Nyumon-Sample)
 
 ## P.169リスト
 
