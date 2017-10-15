@@ -268,7 +268,20 @@ instance Triple String where
 ```
 
 # 7章
-## P.240
+## 7.3.2 Text の利用 (P.240 2つ目のシェル)
+
+誤:
+```bash
+ghci> :set -XOverloadedStrings
+ghci> import qualified Data.Text as T
+ghci> simon :: Text
+ghci> simon = "Many Simons."
+ghci> :t T.pack
+T.pack :: String -> Text
+ghci> :t T.unpack
+T.unpack :: Text -> String
+```
+
 正しくは以下のどちらか。
 
 `import as` の場合。
@@ -297,44 +310,88 @@ ghci> :t T.unpack
 T.unpack :: T.Text -> String
 ```
 
-## P.243
-最初のコード例の先頭に `import qualified Data.Vector as V` が必要。
+## 7.4.1 Vector の基本 (P.243 最初のコード)
+誤植じゃないかも。
 
-## P.247
-補足事項。コードを動かすためには以下の行を自分で追記する必要がある。
-
+誤:
 ```haskell
-import Data.List.Split
-
-data HMS = HMS Int Int Int deriving Show
+main :: IO ()
+main = do
+  let animals = V.fromList ["Dog", "Pig", "Cat", "Fox", "Mouse", "Cow", "Horse"]
+  print . V.sum . V.map length $ animals
 ```
 
+正:
+```haskell
+import qualified Data.Vector as V
 
-## P.250
-補足事項。コードを動かすためには以下の2行を自分で追記する必要がある。
+main :: IO ()
+main = do
+  let animals = V.fromList ["Dog", "Pig", "Cat", "Fox", "Mouse", "Cow", "Horse"]
+  print . V.sum . V.map length $ animals
+```
 
+## 7.5.2 パーサコンビネータ (P.250 1つ目のコード)
+誤植ではないかもしれない。
+
+誤:
+```haskell
+animal :: Parser Animal
+animal = (string "Dog" >> return Dog) <|> (string "Pig" >> return Pig)
+```
+
+正:
 ```haskell
 import Control.Applicative
 data Animal = Dog | Pig deriving Show
+
+animal :: Parser Animal
+animal = (string "Dog" >> return Dog) <|> (string "Pig" >> return Pig)
 ```
 
-## P.254
-補足事項。ページ下部のコードを動かすためには `import qualified Data.Text as T` の代わりに `{-# LANGUAGE OverloadedStrings #-}` が必要。
+## 7.5.5 足し算のパーサを作る (P.254 下段のコード)
 
-## P.258
-`taro` の定義が重複しているためコンパイルエラーとなるため、コメントアウトする。
-
+誤:
 ```haskell
+import qualified Data.Text as T
+import Data.Attoparsec.Text hiding (take)
+```
+
+正:
+```haskell
+{-# LANGUAGE OverloadedStrings #-}
+import Data.Attoparsec.Text hiding (take)
+```
+
+## 7.6.1 aeson の利用 (P.258 下段のコード)
+誤植じゃないかもしれない。
+
+誤:
+```haskell
+deriveJSON defaultOptions ''Department
+
+taro :: Human
+taro = Human { name = "Taro" , age = 30 }
+```
+
+正:
+```haskell
+deriveJSON defaultOptions ''Department
+
 -- taro :: Human
 -- taro = Human { name = "Taro" , age = 30 }
 ```
 
-## P.259
-補足事項。出力結果は `B.putStrLn $ encode nameList` を整形したもの。
+## 7.6.1 aeson の利用 (P.259 下段のコード)
 
-## P.259
-コードが中途半端になっている。
+誤:
+```haskell
+data IntStr = IntData Int | StrData String
+encode $ IntData 999
+encode $ StrData "World!"
+```
 
+正:
 ```haskell
 data IntStr = IntData Int | StrData String deriving Show
 
@@ -346,81 +403,45 @@ main = do
   B.putStrLn $ encode $ StrData "World!"
 ```
 
-## P.260
+## 7.6.2 JSONのデータ構造を直接操作する (P.260 下段コード)
+誤植ではないかもしれない。
 
-コードを動かすためには以下の言語拡張と `import` が必要
+誤:
+```haskell
+nameListValue :: Value
+nameListValue = ...
+```
 
+正:
 ```haskell
 {-# LANGUAGE OverloadedLists #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 import Data.Aeson
+nameListValue :: Value
+nameListValue = ...
 ```
 
-## P.261
-補足事項。完全なコードはこちら。
+## 7.6.2 JSONのデータ構造を直接操作する (P.263 コラム1つ目の最後のコード)
+誤植ではないかもしれない。
 
+誤:
 ```haskell
-{-# LANGUAGE TemplateHaskell   #-}
-
-import Data.Aeson
-import Data.Aeson.TH
-import qualified Data.ByteString.Lazy.Char8 as B
-
-data Human = Human
+data Person = Person
   { name :: String
   , age :: Int
   } deriving Show
 
-deriveJSON defaultOptions ''Human
+instance ToJSON Person where
+  toJSON (Person n a) =
+    object ["name" .= n, "age" .= a]
 
-data Department = Department
-  { departmentName :: String
-  , coworkers :: [Human]
-  } deriving Show
-
-deriveJSON (defaultOptions
-  { fieldLabelModifier = \s -> case s of
-      "departmentName" -> "name"
-      t -> t
-  } ) ''Department
-
-taro :: Human
-taro = Human { name = "Taro" , age = 30 }
-
-saburo :: Human
-saburo = Human { name = "Saburo" , age = 31 }
-
-shiro :: Human
-shiro = Human { name = "Shiro" , age = 31 }
-
-matsuko :: Human
-matsuko = Human { name = "Matsuko" , age = 26}
-
-nameList :: [Department]
-nameList =
-  [ Department
-    { departmentName = "General Affairs"
-    , coworkers =
-      [ taro
-      , matsuko
-      ]
-    }
-  , Department
-    { departmentName = "Development"
-    , coworkers =
-      [ saburo
-      , shiro
-      ]
-    }
-  ]
-
-main :: IO ()
-main = B.putStrLn $ encode nameList
+instance FromJSON Person where
+  parseJSON (Object v) = Person
+    <$> v .: "name"
+    <*> v .: "age"
+  parseJSON i = typeMismatch "Person" i
 ```
-
-## P.263
-補足事項。完全なコード
 
 ```haskell
 {-# LANGUAGE OverloadedStrings #-}
@@ -443,8 +464,22 @@ instance FromJSON Person where
   parseJSON i = typeMismatch "Person" i
 ```
 
-## P.263 Generics の利用のコード
-`import Data.Aeson` が足りないのでコンパイルできない。
+## 7.6.2 JSONのデータ構造を直接操作する (P.263 コラム2つ目のコード)
+
+誤:
+```haskell
+{-# LANGUAGE DeriveGeneric #-}
+import GHC.Generics
+data Person = ...
+```
+
+正:
+```haskell
+{-# LANGUAGE DeriveGeneric #-}
+import GHC.Generics
+import Data.Aeson
+data Person = ...
+```
 
 # 8章
 ## P.286
