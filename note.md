@@ -95,7 +95,7 @@ nameListValue :: Value
 ## 4.1.2 I/Oアクションの組み立て (P.136 1つめのコード)
 
 誤:
-```
+```bash
 Prelude>
 Prelude> return ("Hoge", "Piyo") >>= (\(x, y) -> putStrLn x >>= (\_ -> putStrLn y))
 Hoge
@@ -103,7 +103,7 @@ Piyo
 ```
 
 正:
-```
+```bash
 Prelude> return ("Hoge", "Piyo") >>= (\(x, y) -> putStrLn x >>= (\_ -> putStrLn y))
 Hoge
 Piyo
@@ -113,7 +113,7 @@ Piyo
 誤植かどうか微妙
 
 誤:
-```
+```haskell
 main :: IO ()
 main = do
   hSetBuffering stdin LineBuffering
@@ -128,7 +128,7 @@ main = do
 ```
 
 正:
-```
+```haskell
 import System.IO
 main :: IO ()
 main = do
@@ -162,7 +162,7 @@ main = do
 ## 4.4.2 権限情報 (P.154 コラム Windows の実行ファイル対策のコード)
 
 誤:
-```
+```bash
 Prelude System.Directory> findExecutable $ "ghc" + exeExtension
 ...
 Prelude System.Directory> findExecutables $ "ghc" + exeExtension
@@ -170,7 +170,7 @@ Prelude System.Directory> findExecutables $ "ghc" + exeExtension
 ```
 
 正:
-```
+```bash
 Prelude System.Directory> findExecutable $ "ghc" ++ exeExtension
 ...
 Prelude System.Directory> findExecutables $ "ghc" ++ exeExtension
@@ -188,40 +188,83 @@ Prelude System.Directory> findExecutables $ "ghc" ++ exeExtension
 > throwMyException関数が引数の値によって独自の例外を`throwIO`で発生させます。
 
 # 5章
-## P.178
+## 5.3.2 Applicative (P.178 l.1)
 
+誤:
+> Human データコンストラクタは、`Strig` -> Int -> Gender...
+
+正:
 > Human データコンストラクタは、`String` -> Int -> Gender...
 
-## P.190
+## 5.6.2 ミュータブルな配列 (P.190 l.2)
 
-> 第二引数で指定した初期値のリストの長さ｀が`配列のサイズよりも
+誤:
+> 第二引数で指定した初期値のリストの長さ`がが`配列のサイズよりも
+
+
+正:
+> 第二引数で指定した初期値のリストの長さ`が`配列のサイズよりも
 
 # 6章
-## P.216
+## 6.2.1 テンプレート型プログラミング (P.216 下段のコード)
 
-`filepaths` ではなく `filePaths`
+誤:
+```haskell
+concatMultiFiles filePaths dst =
+  handleMultiFiles filepaths (\hdl -> copyFile hdl dst)
+```
 
-## P.219
+正:
+```haskell
+concatMultiFiles filePaths dst =
+  handleMultiFiles filePaths (\hdl -> copyFile hdl dst)
+```
 
-`do` が足りない
+## 6.2.2 Haskell のスタイル (P.219 1つ目のコード)
 
+誤:
+```haskell
+  handleMultiFiles filePaths $ \hdl ->
+    hClose hdl
+```
+
+正:
 ```haskell
   handleMultiFiles filePaths $ \hdl -> do
     hClose hdl
 ```
 
-## P.223
+## 6.4.1 インスタンス宣言の独立 (P.223 コード)
+誤植ではないかもしれない。
 
 `Ord` クラスの2行目の `::` の前にたぶん空白が1つ必要？(今までのコード例から推測)
 
-## P.224
-言語拡張が必要
+## 6.4.1 インスタンス宣言の独立 (P.224 下段のコード)
 
+誤:
 ```haskell
-{-# LANGUAGE FlexibleInstances    #-}
+class Triple a where
+  triple :: a -> a
+
+instance Triple Int where
+  triple n = n * 3
+
+instance Triple String where
+  triple s = s ++ s ++ s
+```
+
+正:
+```haskell
+{-# LANGUAGE FlexibleInstances #-}
 
 class Triple a where
   triple :: a -> a
+
+instance Triple Int where
+  triple n = n * 3
+
+instance Triple String where
+  triple s = s ++ s ++ s
 ```
 
 # 7章
