@@ -64,58 +64,127 @@ nameListValue :: Value
 > また、検索条件を::から始めると、型で検索ができます。`Char -> String -> [String]` の型で検索してみると。ghcパッケージの...
 
 # 3章
-## 3.3.1 型の組み立て
-### P.87
+## 3.4.2 データコンストラクタ名の規則 (P.92 注釈)
 
-> IO (2.5参照)、Maybe，`(->)`、(,)などは型引数を取る...
+誤:
+> 以後も同様に`derving`句を指定します。
 
-### P.89 カインド
-> 先述のように`(->)`を含む...
-
-> 関数を表す型コンストラクタの`(->)`には、
-
-## 3.4.2 データコンストラクタ名の規則
-### P.92 注釈
-
+正:
 > 以後も同様に`deriving`句を指定します。
 
-## 3.5 レコード記法
-### P.96
+## 3.7.1 type (P.104 l.3)
 
-> コンストラクタの`更新`には、=を利用します。
+誤:
+> 例えば、Either a b型(2.7.4参照) `ととともに` アプリケーション内で
 
-## 3.7.1 type
-### P.104 部分適用を施した型シノニム
+正:
+> 例えば、Either a b型(2.7.4参照) `とともに` アプリケーション内で
 
-> 例えば、Either a b型(2.7.4参照)｀とともに`アプリケーション内で
+## 3.10.5 deriving によるインスタンス定義 (P.130 l.1)
+たぶん誤植だと思うけど、違うかもしれない。
 
-## 3.10.5 deriving によるインスタンス定義
-### P.130
+誤:
+> HaskellのPreludeではデータを`現`すほとんどの型が...
 
+正:
 > HaskellのPreludeではデータを`表`すほとんどの型が...
 
 # 4章
-## P.136
+このあたりから実行できないコードが混ざってくるので、誤植かどうか判断がつきづらい部分がある。
 
-ソースコードの1行目の `Prelude>` は不必要
+## 4.1.2 I/Oアクションの組み立て (P.136 1つめのコード)
 
-## P.142
-ソースコードに `import System.IO` が無いので実行できない
+誤:
+```
+Prelude>
+Prelude> return ("Hoge", "Piyo") >>= (\(x, y) -> putStrLn x >>= (\_ -> putStrLn y))
+Hoge
+Piyo
+```
 
-## P.151
+正:
+```
+Prelude> return ("Hoge", "Piyo") >>= (\(x, y) -> putStrLn x >>= (\_ -> putStrLn y))
+Hoge
+Piyo
+```
 
+## 4.3.1 標準入出力関数 (P.142 コラムのコード)
+誤植かどうか微妙
+
+誤:
+```
+main :: IO ()
+main = do
+  hSetBuffering stdin LineBuffering
+  x <- getChar
+  print x
+  x <- getChar
+  print x
+  x <- getChar
+  print x
+  xs <- getLine
+  putStrLn xs
+```
+
+正:
+```
+import System.IO
+main :: IO ()
+main = do
+  hSetBuffering stdin LineBuffering
+  x <- getChar
+  print x
+  x <- getChar
+  print x
+  x <- getChar
+  print x
+  xs <- getLine
+  putStrLn xs
+```
+
+## 4.4.2 権限情報 (P.151 l.3)
+
+誤:
+> 同じく System.`Drectory`モジュールの
+
+正:
 > 同じく System.`Directory`モジュールの
 
-## P.153
+## 4.4.2 権限情報 (P.153 コラム l.2)
 
+誤:
+> System.`Drectory`モジュールの
+
+正:
 > System.`Directory`モジュールの
 
-## P.154 Column
+## 4.4.2 権限情報 (P.154 コラム Windows の実行ファイル対策のコード)
 
-＞ `++` が正しい
+誤:
+```
+Prelude System.Directory> findExecutable $ "ghc" + exeExtension
+...
+Prelude System.Directory> findExecutables $ "ghc" + exeExtension
+...
+```
 
-## P.161
+正:
+```
+Prelude System.Directory> findExecutable $ "ghc" ++ exeExtension
+...
+Prelude System.Directory> findExecutables $ "ghc" ++ exeExtension
+...
+```
 
+`+` ではなく `++` が正しい。
+
+## 4.5.3 独自の例外を定義する (P.161 l.9)
+
+誤:
+> throwMyException関数が引数の値によって独自の例外を`thorwIO`で発生させます。
+
+正:
 > throwMyException関数が引数の値によって独自の例外を`throwIO`で発生させます。
 
 # 5章
