@@ -367,3 +367,23 @@ import Control.Exception
 
 ## P.369
 `src/Web.WeightRecorder.hs`
+
+# 11章
+## P.377
+`Client`
+
+## P.386
+`stack runghc counter.hs`
+
+## P.387
+部分を適切に(を)切り出す(と)方法などがあります。
+
+## P.389
+`Maybe AuctionItem`
+
+## P.388
+11.3.1 のコードは全く動かないので打ち込んでも無駄。
+
+- `deriveJSON defaultOptions ''UUID` いらない
+- コードの定義順のせいでコンパイルできない
+- 言語拡張と `import` は自分で追加する
